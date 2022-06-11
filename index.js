@@ -1,8 +1,11 @@
- const express = require('express');
+const express = require('express');
+const getShortIds = require('./shortid-generator')
+
 const app = express();
 const port = 3000;
 
-const longUrls = [];
+const shortIds = getShortIds();
+const longUrls = {};
 
 app.use(express.json());
 
@@ -12,11 +15,11 @@ app.get('/:id', (req, res) => {
 });
 
 app.post('/api/shorten', (req, res) => {
-  longUrls.push(req.body.longUrl)
-  const shortUrlId = longUrls.length - 1;
+  const shortUrlId = shortIds.pop();
+  longUrls[shortUrlId] = req.body.longUrl;
 
   res.send({
-    shortUrl: `http://localhost:3000/${shortUrlId}`
+    shortUrl: `http://localhost:${port}/${shortUrlId}`
   });
 });
 
