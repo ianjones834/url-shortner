@@ -1,6 +1,6 @@
 const express = require('express');
 const { Pool } = require('pg');
-const getLongUrlId = require('./shortid-generator')
+const getLongUrlId = require('./shortid-generator');
 
 const app = express();
 const port = 3000;
@@ -12,7 +12,6 @@ const pool = new Pool({
   password: 'password',
   port: '5432'
 });
-
 
 app.use(express.json());
 
@@ -31,7 +30,7 @@ app.get('/:id', async (req, res) => {
 app.post('/api/shorten', async (req, res) => {
 
   const client = await pool.connect();
-  const longUrlCounter = (await client.query("select nextval ('long_url_counter')")).rows[0].nextval;
+  const longUrlCounter = (await client.query("select nextval ('long_url_sequence')")).rows[0].nextval;
 
   const longUrlId = getLongUrlId(longUrlCounter);
 
