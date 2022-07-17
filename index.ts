@@ -1,8 +1,8 @@
-const express = require('express');
-const { Pool } = require('pg');
-const getLongUrlId = require('./shortid-generator');
+import express, { Express } from 'express';
+import { Pool } from 'pg';
+import { generateLongUrlId } from './shortid-generator';
 
-const app = express();
+const app: Express = express();
 const port = 3000;
 
 const pool = new Pool({
@@ -10,7 +10,7 @@ const pool = new Pool({
   host: 'localhost',
   database: 'postgres',
   password: 'password',
-  port: '5432'
+  port: 5432
 });
 
 app.use(express.json());
@@ -32,10 +32,10 @@ app.post('/api/shorten', async (req, res) => {
   const client = await pool.connect();
   const longUrlCounter = (await client.query("select nextval ('long_url_sequence')")).rows[0].nextval;
 
-  const longUrlId = getLongUrlId(longUrlCounter);
+  const longUrlId = generateLongUrlId(longUrlCounter);
 
   const sql = 'insert into long_url(id, long_url) values ($1, $2)';
-  const params =[longUrlId, req.body.longUrl];
+  const params = [longUrlId, req.body.longUrl];
 
   await client.query(sql, params);
   await client.release();

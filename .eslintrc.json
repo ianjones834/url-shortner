@@ -1,0 +1,30 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+
+  "extends": [
+    "standard"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+
+  "plugins": [
+    "@typescript-eslint"
+  ],
+
+  "rules": {
+    "semi": [2, "always"],
+    "padded-blocks": "off",
+    "space-before-function-paren": ["error", {
+      "named": "never"
+    }],
+    "brace-style": ["error", "stroustrup"]
+  }
+}
