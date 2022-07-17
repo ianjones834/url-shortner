@@ -6,5 +6,5 @@ POST http://localhost:3000/api/shorten HTTP/1.1
 Content-Type: application/json
 
 {
-  "longUrl": "https://github.com/mtjones330/url-shortener/blob/main/index.js"
+  "longUrl": "https://github.com/ianjones834/workstation-setup"
 }

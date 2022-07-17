@@ -3,14 +3,19 @@ const base = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const randomNumber = 1422498999669;
 
 export function generateLongUrlId(n: number) {
-  let shortId = '';
+  const shiftedId = (n * randomNumber) % Math.pow(base.length, 7);
+  const longUrlId = _generateLongUrlId(shiftedId).padStart(7, base[0]);
 
-  let shiftedId = (n * randomNumber) % Math.pow(base.length, 7);
+  return longUrlId;
+}
 
-  while (shiftedId) {
-    shortId = base[shiftedId % base.length] + shortId;
-    shiftedId = parseInt((shiftedId / base.length).toString());
+function _generateLongUrlId(n: number): string {
+  if (n === 0) {
+    return '';
   }
 
-  return shortId.padStart(7, base[0]);
+  const char = base[n % base.length];
+  n = parseInt((n / base.length).toString());
+
+  return _generateLongUrlId(n) + char;
 }
