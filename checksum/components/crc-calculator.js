@@ -1,5 +1,5 @@
 const xor = require('./binaryxor');
-const divisor = '100011101';
+const divisor = '100000100110000010001110110110111';
 
 module.exports.crcCalculator = (byte) => {
   let byteString = byte.toString(2);
@@ -18,7 +18,7 @@ module.exports.crcCalculator = (byte) => {
 
   }
 
-  while (byteString.length < 8) {
+  while (byteString.length < 32) {
     byteString = byteString + '0';
   }
 

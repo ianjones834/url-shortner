@@ -5,11 +5,14 @@ module.exports.binaryXor = (dividend, divisor, lookUp) => {
       dividend = '0' + dividend;
     }
 
-    while (divisor.length < 8) {
+    while (dividend.length < 32) {
+      dividend = dividend + '0';
+    }
+
+    while (divisor.length < 32) {
       divisor = '0' + divisor;
     }
   }
-
   else {
     while (dividend.length < divisor.length) {
       dividend = dividend + '0';
