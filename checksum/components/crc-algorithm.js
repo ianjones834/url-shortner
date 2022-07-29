@@ -10,7 +10,7 @@ module.exports.crcAlgorithm = (dataBuf) => {
   for (let byteIndex = 0; byteIndex < dataBuf.length; byteIndex++) {
     newByte = byteOp.byteCompletion(byteOp.decimalToBinary(dataBuf[byteIndex]));
     crcValue = byteOp.byteCompletion(byteOp.decimalToBinary(crcValue));
-    
+
     newByte = byteOp.byteStringRightLengthen(newByte, 32);
     crcValue = byteOp.byteStringLeftLengthen(crcValue, 32);
 
