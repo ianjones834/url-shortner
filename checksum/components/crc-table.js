@@ -7,7 +7,7 @@ module.exports.crcTable = () => {
   const crcLookUpTable = [];
 
   for (const byte in byteArray) {
-    crcLookUpTable.push(calculator.crcCalculator(byteArray[byte]));
+    crcLookUpTable[byte] = calculator.crcCalculator(byteArray[byte]);
   }
 
   return crcLookUpTable;

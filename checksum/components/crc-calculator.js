@@ -1,28 +1,28 @@
-const xor = require('./binaryxor');
+const byteOperations = require('./byte-operations');
 const divisor = '100000100110000010001110110110111';
 
-module.exports.crcCalculator = (byte) => {
-  let byteString = byte.toString(2);
-  const byteLength = byteString.length;
-
+module.exports.crcCalculator = (decimal) => {
+  let byteString = byteOperations.decimalToBinary(decimal);
   let count = 0;
 
-  while (count < byteLength) {
+  byteString = byteOperations.byteCompletion(byteString);
+  byteString = byteOperations.byteStringRightLengthen(byteString, divisor.length);
+
+  while (count < 8) {
     if (byteString[0] === '0') {
       byteString = byteString.slice(1);
       count++;
     }
     else {
-      byteString = xor.binaryXor(byteString, divisor, false);
+      byteString = byteOperations.byteStringRightLengthen(byteString, divisor.length);
+      byteString = byteOperations.binaryXor(byteString, divisor);
     }
-
   }
 
-  while (byteString.length < 32) {
-    byteString = byteString + '0';
-  }
+  byteString = byteOperations.byteStringRightLengthen(byteString, 32);
+  byteString = byteOperations.byteStringRightShorten(byteString, 32);
 
-  const crcByte = parseInt(byteString, 2);
+  const crcTableElement = byteOperations.binaryToHex(byteString);
 
-  return crcByte;
+  return crcTableElement;
 };

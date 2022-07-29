@@ -5,7 +5,7 @@ module.exports.checksumFinder = (string) => {
   const dataBuffer = fs.readFileSync(string);
   const result = algorithm.crcAlgorithm(dataBuffer);
 
-  return '0x' + result.toUpperCase();
+  return result;
 };
 
 console.log(this.checksumFinder('./test.txt'));

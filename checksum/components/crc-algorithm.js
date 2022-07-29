@@ -1,36 +1,34 @@
 const table = require('./crc-table');
-const xor = require('./binaryxor');
+const byteOp = require('./byte-operations');
 
 module.exports.crcAlgorithm = (dataBuf) => {
   const crcTable = table.crcTable();
 
   let crcValue = 0;
+  let newByte = 0;
 
   for (let byteIndex = 0; byteIndex < dataBuf.length; byteIndex++) {
-    const newDividendBinary = xor.binaryXor(dataBuf[byteIndex].toString(2), crcValue.toString(2), true);
+    newByte = byteOp.byteCompletion(byteOp.decimalToBinary(dataBuf[byteIndex]));
+    crcValue = byteOp.byteCompletion(byteOp.decimalToBinary(crcValue));
+    
+    newByte = byteOp.byteStringRightLengthen(newByte, 32);
+    crcValue = byteOp.byteStringLeftLengthen(crcValue, 32);
 
-    const mostSignifianctDividend = mostSignificantByte(newDividendBinary);
-    const crcValueBinary = bitShiftLeft(crcValue.toString(2));
+    const remainder = byteOp.binaryXor(newByte, crcValue);
 
-    const crcIndex = parseInt(mostSignifianctDividend, 2);
-    crcValue = xor.binaryXor(crcTable[crcIndex].toString(2), crcValueBinary, true);
+    const remainderSignificantByte = byteOp.byteStringRightShorten(remainder, 8);
+    const crcTableIndex = byteOp.binaryToDecimal(remainderSignificantByte);
+
+    let crcTableValue = byteOp.byteCompletion(byteOp.hexToBinary(crcTable[crcTableIndex]));
+
+    let crcShortened = byteOp.byteStringLeftShorten(crcValue, 24);
+    crcShortened = byteOp.byteCompletion(crcShortened);
+
+    crcTableValue = byteOp.byteStringLeftLengthen(crcTableValue, 32);
+    crcShortened = byteOp.byteStringRightLengthen(crcShortened, 32);
+
+    crcValue = byteOp.binaryXor(crcShortened, crcTableValue);
   }
 
-  return parseInt(crcValue, 2).toString(16);
+  return '0x' + byteOp.binaryToHex(crcValue).toUpperCase();
 };
-
-function mostSignificantByte(byte) {
-  while (byte.length > 8) {
-    byte = byte.slice(0, -1);
-  }
-
-  return byte;
-}
-
-function bitShiftLeft(crc) {
-  for (let i = 0; i < 8; i++) {
-    crc = crc.slice(0, -1);
-  }
-
-  return crc;
-}
